@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard'     => 'api',
         'passwords' => 'users',
     ],
 
@@ -40,6 +40,12 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'api' => [
+            'driver'    => 'jwt',
+            'provider'  => 'users',
+            'hash'      => false,
+        ],
     ],
 
     /*
@@ -59,16 +65,17 @@ return [
     |
     */
 
+    //Reemplaza el provider de eloquent por el creado para el test mockapi
     'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\User::class,
-        ],
-
         // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
+        //     'driver' => 'eloquent',
+        //     'model' => App\Models\User::class,
         // ],
+
+        'users' => [
+            'driver' => 'mockapi',
+            //'table' => 'users',
+        ],
     ],
 
     /*

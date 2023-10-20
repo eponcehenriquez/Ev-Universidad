@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,19 +15,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 
 //Rutas API
 
 //Endpoint autenticación login
-Route::post('/login', 'AuthController@login');
+Route::post('/login', [ AuthController::class, 'login']);
 //Endpoint registrar un nuevo usuario
-Route::post('/new', 'AuthController@register');
-// Grupo de rutas que requieren autenticación de la API
-Route::middleware('auth:api')->group(function () {
-    // Endpoint para obtener la información de perfil
-    Route::get('/me', 'AuthController@me');
-});
+Route::post('/new', [ AuthController::class, 'new']);
+// Endpoint para obtener el usuario actual
+Route::get('/me', [ AuthController::class, 'me'])->middleware('auth:api');
+Route::delete('/me', [ AuthController::class, 'destroy'])->middleware('auth:api');
+Route::put('/me', [ AuthController::class, 'update'])->middleware('auth:api');

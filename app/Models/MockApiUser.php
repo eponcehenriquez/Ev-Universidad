@@ -12,9 +12,10 @@ use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 //Añade la implementacion JWTSubject al modelo User
-class User extends Authenticatable implements JWTSubject
+class MockApiUser extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
+    protected $primaryKey = 'id';
 
     /**
      * The attributes that are mass assignable.
@@ -22,7 +23,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'nombre',
         'email',
         'password',
     ];
@@ -34,7 +35,6 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
     /**
@@ -43,14 +43,15 @@ class User extends Authenticatable implements JWTSubject
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        'password'          => 'hashed',
     ];
 
     //Metodo que devuelve el identificador unico
     public function getJWTIdentifier()
     {
-        return $this->getKey();
+        //return $this->getKey();
+        return "id";
+
     }
 
     //Metodo que devuelve un array en caso de querer incluir mas informacion en el token
