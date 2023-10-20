@@ -24,8 +24,9 @@ Ejecutar el servidor de desarrollo:
     php artisan serve
 
 
-##Env.
+## Env.
 DB_CONNECTION=null
+
 
 
 ## Prueba
@@ -37,6 +38,8 @@ DB_CONNECTION=null
 ## Cambio de Provider
 
 En este proyecto, se ha reemplazado el provider predeterminado de Eloquent por un provider personalizado llamado MockApiUserProvider. Este provider se encarga de interactuar con el endpoint externo https://653040df6c756603295e7806.mockapi.io/v1/users para la autenticación y gestión de usuarios, en lugar de utilizar una base de datos local.
+
+
 
 ## Documentación de la API
 
