@@ -43,7 +43,7 @@ return [
 
         'api' => [
             'driver'    => 'jwt',
-            'provider'  => 'users',
+            'provider'  => 'mockapi',
             'hash'      => false,
         ],
     ],
@@ -72,7 +72,7 @@ return [
         //     'model' => App\Models\User::class,
         // ],
 
-        'users' => [
+        'mockapi' => [
             'driver' => 'mockapi',
             //'table' => 'users',
         ],

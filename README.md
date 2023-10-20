@@ -17,12 +17,15 @@ Esta aplicación es un proyecto de Laravel que se conecta con un endpoint extern
 Instalar las dependencia:
     composer install
 
-
 Generar la clave de la aplicación:
     php artisan key:generate
 
 Ejecutar el servidor de desarrollo:
     php artisan serve
+
+
+##Env.
+DB_CONNECTION=null
 
 
 ## Prueba
