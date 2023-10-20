@@ -1,0 +1,204 @@
+#%RAML 1.0
+title: Ev-Universidad
+version: v1
+baseUri: http://127.0.0.1:8000/{version}
+protocols: [ HTTP, HTTPS ]
+types:
+  NuevoUsuario:
+    type: object
+    properties:
+      nombre: 
+        type: string
+        description: El nombre del usuario.
+      email:
+        type: string
+        description: El correo electrónico del usuario.
+      password:
+        type: string
+        description: La contraseña del usuario.
+    required: [nombre, email, password]
+  CredencialesLogin:
+    properties:
+      email: 
+        type: string
+        pattern: ^[^@]+@[^@]+\.[^@]+$
+        description: Correo usuario
+      password: 
+        type: string
+        minLength: 8
+        description: Contraseña Usuario
+  AuthResponse:
+    properties:
+      access_token:
+        type: string
+        description: Token JWT
+      token_type:
+        type: string
+        description: Bearer
+      expires_in:
+        type: integer
+        description: Duración del Token
+/api:
+  /login:
+    post:
+      description: Endpoint para iniciar sesión
+      body:
+        application/json:
+          type: CredencialesLogin
+      responses:
+        200:
+          body:
+            application/json:
+              type: AuthResponse
+        401:
+          description: Sin Autorización
+          body:
+            application/json:
+              example: |
+                {
+                  "error": "No Autorizado"
+                }
+  /new:
+    post:
+      description: Endpoint para registrar un nuevo usuario
+      body:
+        application/json:
+          type: NuevoUsuario
+      responses:
+        200:
+          body:
+            application/json:
+              type: AuthResponse
+        400:
+          description: Bad Request
+          body:
+            application/json:
+              example: |
+                {
+                  "error": "Datos de entrada no válidos"
+                }
+        500:
+          description: Internal Server Error
+          body:
+            application/json:
+              example: |
+                {
+                  "error": "Error del servidor"
+                }
+  /me:
+    get:
+      description: Endpoint para obtener el usuario actual
+      headers:
+        Authorization:
+          description: Bearer token para autenticar al usuario.
+          type: string
+          required: true
+          example: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        Accept:
+          description: Tipo de contenido aceptado.
+          type: string
+          required: true
+          example: "application/json"
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "id": "2"
+                }
+        401:
+          description: No autorizado
+          body:
+            application/json:
+              example: |
+                {
+                  "error": "No Autorizado"
+                }
+        500:
+          description: Error interno del servidor
+          body:
+            application/json:
+              example: |
+                {
+                  "error": "Error del servidor"
+                }
+    delete:
+      description: Endpoint para eliminar el usuario actual
+      headers:
+        Authorization:
+          description: Bearer token para autenticar al usuario.
+          type: string
+          required: true
+          example: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        Accept:
+          description: Tipo de contenido aceptado.
+          type: string
+          required: true
+          example: "application/json"
+      responses:
+        200:
+          description: Respuesta exitosa
+          body:
+            application/json:
+              example: |
+                {
+                  "message": "Perfil eliminado correctamente"
+                }
+        401:
+          description: No autorizado
+          body:
+            application/json:
+              example: |
+                {
+                  "error": "No Autorizado"
+                }
+        500:
+          description: Error interno del servidor
+          body:
+            application/json:
+              example: |
+                {
+                  "error": "Error del servidor"
+                }
+    put:
+      description: Endpoint para actualizar el usuario actual
+      headers:
+        Authorization:
+          description: Bearer token para autenticar al usuario.
+          type: string
+          required: true
+          example: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        Accept:
+          description: Tipo de contenido aceptado.
+          type: string
+          required: true
+          example: "application/json"
+      body:
+        application/json:
+          type: NuevoUsuario
+      responses:
+        200:
+          description: Respuesta exitosa
+          body:
+            application/json:
+              example: |
+                {
+                  "message": "Perfil actualizado con éxito"
+                }
+        401:
+          description: No autorizado
+          body:
+            application/json:
+              example: |
+                {
+                  "error": "No Autorizado"
+                }
+        500:
+          description: Error interno del servidor
+          body:
+            application/json:
+              example: |
+                {
+                  "error": "Error del servidor"
+                }

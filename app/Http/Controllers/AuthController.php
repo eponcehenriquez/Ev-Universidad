@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use App\Models\MockApiUser;
 use Illuminate\Http\Request;
 use Carbon\Exceptions\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Validator;
 use App\Services\MockApiUserServices;
 use App\Providers\MockApiUserProvider;
 use App\Http\Requests\RegistrarUsuarioRequest;
@@ -24,7 +26,7 @@ class AuthController extends Controller
         $this->userProvider = $userProvider;
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
 
@@ -89,16 +91,6 @@ class AuthController extends Controller
         }
     }
 
-    protected function generarJsonToken($token)
-    {
-        //Genera el json con la información del token
-        return response()->json([
-            'access_token'  => $token,
-            'token_type'    => 'bearer',
-            'expires_in'    => auth()->factory()->getTTL() * 60
-        ]);
-    }
-
     public function destroy()
     {
         $usuarioId  = auth()->user()->getAuthIdentifier();
@@ -136,5 +128,15 @@ class AuthController extends Controller
         } else {
             return response()->json(['error' => 'No se pudo actualizar el perfil'], $response->status());
         }
+    }
+
+    protected function generarJsonToken($token)
+    {
+        //Genera el json con la información del token
+        return response()->json([
+            'access_token'  => $token,
+            'token_type'    => 'bearer',
+            'expires_in'    => auth()->factory()->getTTL() * 60
+        ]);
     }
 }
